@@ -8,6 +8,13 @@ pub struct Vec3D {
 }
 
 impl Vec3D {
+    pub fn zero() -> Vec3D {
+        return Vec3D {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        };
+    }
     pub fn norm1(&self) -> f64 {
         return self.x.abs() + self.y.abs() + self.z.abs();
     }
@@ -17,6 +24,18 @@ impl ops::Add<Vec3D> for Vec3D {
     type Output = Vec3D;
 
     fn add(self, rhs: Vec3D) -> Vec3D {
+        Vec3D {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+
+impl ops::Add<&Vec3D> for &Vec3D {
+    type Output = Vec3D;
+
+    fn add(self, rhs: &Vec3D) -> Vec3D {
         Vec3D {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
