@@ -14,28 +14,15 @@ impl Vec3D {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use approx::assert_relative_eq;
+    use test_case::test_case;
 
-    #[test]
-    fn test_norm1_int() {
-        let vec = Vec3D {
-            x: 0.0,
-            y: 0.0,
-            z: 0.0,
-        };
-        assert_eq!(0.0, vec.norm1());
-
-        let vec = Vec3D {
-            x: -1.0,
-            y: 1.0,
-            z: 0.0,
-        };
-        assert_eq!(2.0, vec.norm1());
-
-        let vec = Vec3D {
-            x: -1.0,
-            y: 1.0,
-            z: 0.0,
-        };
-        assert_relative_eq!(2.0, vec.norm1(), epsilon = f64::EPSILON);
+    #[test_case(0.0, 0.0, 0.0, 0.0 ; "zero vector")]
+    #[test_case(0.2, 1.8, 0.0, 2.0 ; "positive vector")]
+    #[test_case(2.0, -3.0, 0.0, 5.0 ; "negative vector")]
+    #[test_case(0.0, -3.75, 0.2, 3.95 ; "fraction vector")]
+    fn test_norm1_int(x: f64, y: f64, z: f64, expected: f64) {
+        let vec = Vec3D { x, y, z };
+        assert_relative_eq!(expected, vec.norm1(), epsilon = f64::EPSILON);
     }
 }
