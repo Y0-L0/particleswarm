@@ -33,6 +33,18 @@ impl ops::AddAssign<&Vec3D> for Vec3D {
     }
 }
 
+impl ops::Sub<&Vec3D> for &Vec3D {
+    type Output = Vec3D;
+
+    fn sub(self, rhs: &Vec3D) -> Self::Output {
+        Vec3D {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
 impl ops::Neg for Vec3D {
     type Output = Self;
     fn neg(mut self) -> Self {
@@ -94,6 +106,24 @@ mod tests {
         assert_relative_eq!(5.0, vec1.x, epsilon = f64::EPSILON);
         assert_relative_eq!(7.0, vec1.y, epsilon = f64::EPSILON);
         assert_relative_eq!(9.0, vec1.z, epsilon = f64::EPSILON);
+    }
+
+    #[test]
+    fn test_sub_vec3d() {
+        let vec1 = Vec3D {
+            x: 1.0,
+            y: 2.0,
+            z: 3.0,
+        };
+        let vec2 = Vec3D {
+            x: 4.0,
+            y: 5.0,
+            z: 6.0,
+        };
+        let vec_sum = &vec1 - &vec2;
+        assert_relative_eq!(-3.0, vec_sum.x, epsilon = f64::EPSILON);
+        assert_relative_eq!(-3.0, vec_sum.y, epsilon = f64::EPSILON);
+        assert_relative_eq!(-3.0, vec_sum.z, epsilon = f64::EPSILON);
     }
 
     #[test]
