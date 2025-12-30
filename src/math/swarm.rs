@@ -1,8 +1,8 @@
-use crate::math::Particle;
+use crate::math::{Particle, Vec3D};
 
 pub trait Swarm {
     fn update(&mut self);
-    // fn iter_positions(&self);
+    fn iter_positions(&self) -> impl Iterator<Item = &Vec3D>;
 }
 
 impl Swarm for Vec<Particle> {
@@ -10,6 +10,10 @@ impl Swarm for Vec<Particle> {
         for p in self.iter_mut() {
             p.update();
         }
+    }
+
+    fn iter_positions(&self) -> impl Iterator<Item = &Vec3D> {
+        return self.iter().map(|p| &p.position);
     }
 }
 
@@ -19,6 +23,7 @@ mod tests {
 
     use super::*;
     use approx::assert_relative_eq;
+    use rand::{SeedableRng, rngs::StdRng};
 
     #[test]
     fn test_update() {
@@ -56,6 +61,18 @@ mod tests {
             acceleration.norm1(),
             swarm[1].position.norm1(),
             epsilon = f64::EPSILON
+        );
+    }
+
+    #[test]
+    fn test_positions_iterator() {
+        let mut rng = StdRng::seed_from_u64(42);
+        let swarm = vec![Particle::spawn(&mut rng), Particle::spawn(&mut rng)];
+
+        assert_eq!(
+            2,
+            swarm.iter_positions().count(),
+            "Swarm of 2 particles must iterate two positions!"
         );
     }
 }
