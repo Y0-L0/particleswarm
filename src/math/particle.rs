@@ -35,15 +35,20 @@ impl Particle {
         }
     }
 
-    fn update(&mut self) {
-        // TODO cont
-        // self.velocity += self.acceleration;
+    pub fn update(&mut self) {
+        self.velocity += &self.acceleration;
+        self.position += &self.velocity;
     }
 }
 
 #[cfg(test)]
 mod test {
+    use core::f64;
+
+    use approx::assert_relative_eq;
     use rand::{SeedableRng, rngs::StdRng};
+
+    use crate::math::Vec3D;
 
     use super::*;
 
@@ -61,5 +66,38 @@ mod test {
         assert_ne!(0.0, particle.velocity.x);
         assert_ne!(0.0, particle.velocity.y);
         assert_ne!(0.0, particle.velocity.z);
+    }
+
+    #[test]
+    fn test_update() {
+        let origin = Vec3D {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+        };
+        let velocity = origin.clone();
+        let acceleration = Vec3D {
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+        };
+        let mut particle = Particle {
+            position: origin,
+            velocity,
+            acceleration: acceleration.clone(),
+        };
+
+        particle.update();
+
+        assert_relative_eq!(
+            acceleration.norm1(),
+            particle.position.norm1(),
+            epsilon = f64::EPSILON
+        );
+
+        particle.update();
+
+        assert_relative_eq!(3.0 * 3.0, particle.position.norm1(), epsilon = f64::EPSILON);
+        assert_relative_eq!(3.0 * 2.0, particle.velocity.norm1(), epsilon = f64::EPSILON);
     }
 }

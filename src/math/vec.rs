@@ -8,7 +8,7 @@ pub struct Vec3D {
 }
 
 impl Vec3D {
-    fn norm1(&self) -> f64 {
+    pub fn norm1(&self) -> f64 {
         return self.x.abs() + self.y.abs() + self.z.abs();
     }
 }
@@ -25,8 +25,8 @@ impl ops::Add<Vec3D> for Vec3D {
     }
 }
 
-impl ops::AddAssign for Vec3D {
-    fn add_assign(&mut self, rhs: Self) {
+impl ops::AddAssign<&Vec3D> for Vec3D {
+    fn add_assign(&mut self, rhs: &Self) {
         self.x += rhs.x;
         self.y += rhs.y;
         self.z += rhs.z;
@@ -80,7 +80,7 @@ mod tests {
             y: 5.0,
             z: 6.0,
         };
-        vec1 += vec2;
+        vec1 += &vec2;
         assert_relative_eq!(5.0, vec1.x, epsilon = f64::EPSILON);
         assert_relative_eq!(7.0, vec1.y, epsilon = f64::EPSILON);
         assert_relative_eq!(9.0, vec1.z, epsilon = f64::EPSILON);
