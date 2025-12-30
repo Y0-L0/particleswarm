@@ -11,7 +11,6 @@ pub struct Particle {
 
 impl Particle {
     pub fn spawn(rng: &mut impl Rng) -> Particle {
-        // TODO: Fix unwrap.
         let between = Uniform::new(-1.0, 1.0).unwrap();
         let position = Vec3D {
             x: between.sample(rng),

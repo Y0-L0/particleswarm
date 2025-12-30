@@ -33,6 +33,16 @@ impl ops::AddAssign<&Vec3D> for Vec3D {
     }
 }
 
+impl ops::Neg for Vec3D {
+    type Output = Self;
+    fn neg(mut self) -> Self {
+        self.x = -self.x;
+        self.y = -self.y;
+        self.z = -self.z;
+        return self;
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use core::f64;
@@ -84,5 +94,18 @@ mod tests {
         assert_relative_eq!(5.0, vec1.x, epsilon = f64::EPSILON);
         assert_relative_eq!(7.0, vec1.y, epsilon = f64::EPSILON);
         assert_relative_eq!(9.0, vec1.z, epsilon = f64::EPSILON);
+    }
+
+    #[test]
+    fn test_neg_vec3d() {
+        let mut vec = Vec3D {
+            x: 1.0,
+            y: 2.0,
+            z: -3.0,
+        };
+        vec = -vec;
+        assert_relative_eq!(-1.0, vec.x, epsilon = f64::EPSILON);
+        assert_relative_eq!(-2.0, vec.y, epsilon = f64::EPSILON);
+        assert_relative_eq!(3.0, vec.z, epsilon = f64::EPSILON);
     }
 }

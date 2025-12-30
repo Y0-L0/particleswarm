@@ -1,4 +1,5 @@
 pub mod particle;
+pub mod swarm;
 pub mod vec;
 
 pub use particle::Particle;
